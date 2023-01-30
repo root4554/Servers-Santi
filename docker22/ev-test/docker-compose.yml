@@ -1,0 +1,27 @@
+version: '3'
+services:
+  WEBSERVER:
+    image: nginx
+    ports:
+     - "80:80"
+    volumes:
+     - ./webserver:/usr/share/nginx/html
+  API:
+    image: node
+    command: npm start
+    ports:
+     - "3000:3000"
+    volumes:
+     - ./node-API:/usr/src/app
+  PROXY:
+    image: 'nginx:latest'
+    ports:
+     - "8080:80"
+    volumes:
+     - ./proxy:/etc/nginx/conf.d
+    depends_on:
+      - WEBSERVER
+      - API
+
+
+
