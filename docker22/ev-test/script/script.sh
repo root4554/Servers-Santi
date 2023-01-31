@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Levantar 5 contenedores
-docker run -d --name ubuntu0 ubuntu:latest
+docker run -d --name 
 docker restart ubuntu0 --restart=always
 
 docker run -d --name ubuntu1 ubuntu:latest
