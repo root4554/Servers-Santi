@@ -1,0 +1,28 @@
+version: "3"
+services:
+  webserver:
+    build: ./webserver
+    volumes:
+      - ./webserver/src:/var/www/html
+    networks:
+      - default
+  api1:
+    build: ./api
+    networks:
+      - default
+  api2:
+    build: ./api
+    networks:
+      - default
+  nginx-proxy:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - default
+    depends_on:
+      - api1
+      - api2
+      - webserver

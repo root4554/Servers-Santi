@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Documento sin título</title>
+</head>
+
+<body>
+    <p>AFORO CONCIERTO SUPERTRAMP</p>
+    <table width="400" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+        <script>
+            sCadena = "";
+            sCadena += '<tr><td>POS</td>'
+            for (c = 0; c < 10; c++) {
+                sCadena += '<td width="40" align="center" >' + c + '</td>';
+            }
+            sCadena += '</tr>'
+
+            for (f = 0; f < 10; f++) {
+                sCadena += '<tr><td align="center">' + f + '</td>';
+                for (c = 0; c < 10; c++) {
+                    sCadena += '<td width="40" border="1" bordercolor="#000000" id="pos' + f + c + '">&nbsp;</td>'
+                }
+                sCadena += '<tr>';
+            }
+
+            document.write(sCadena);
+        </script>
+    </table>
+    <div id="Situacion">
+        <h1 id="hOcupadas">Plazas ocupadas: </h1>
+        <h1 id="hLibres">Plazas Libres: </h1>
+        <h1 id="hPorcentaje">Porcentaje:</h1>
+    </div>
+
+
+    <script>
+
+        let porcentaje;
+        const options = { method: "GET" };
+        setInterval(() => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort("x"), 8000);
+            fetch(
+                "https://EXAMEN2EVAL.gonzaloalvarez7.repl.co/situacion",
+                { signal: controller.signal },
+                options
+            )
+                .then((response) => response.json())
+                .then((response) => {
+                    actualizarDatosTabla(response);
+                    clearTimeout(timeoutId);
+                })
+                .catch((err) => console.log(err));
+        }, 10000);
+        function actualizarDatosTabla(response) {
+            let ocupadas = 0;
+            let libres = 0;
+            for (let i = 0; i < 10; i++) {
+                let columna = response[i].Ocupacion.split("")
+                for (let y = 0; y < 10; y++) {
+                    let casilla = document.querySelector(`#pos${i}${y}`);
+                    columna[y] == 0 ? casilla.style.backgroundColor = "green" : casilla.style.backgroundColor = "red";
+                    if (columna[y] == 0) {
+                        libres++
+                    } else {
+                        ocupadas++;
+                    }
+                }
+            }
+
+            const hOcupadas = document.querySelector("#hOcupadas")
+            const hLibres = document.querySelector("#hLibres")
+            const hPorcentaje = document.querySelector("#hPorcentaje")
+            if (libres == 0) {
+                hOcupadas.innerHTML = "AFORO COMPLETO"
+            } else {
+                hOcupadas.innerHTML = "Plazas ocupadas: "
+                hOcupadas.innerHTML += ocupadas;
+                hLibres.innerHTML = "Plazas Libres: ";
+                hLibres.innerHTML += libres;
+                hPorcentaje.innerHTML = "Porcentaje: "
+                hPorcentaje.innerHTML += libres + "%"
+
+            }
+
+
+        }
+
+    </script>
+</body>
+
+</html>
