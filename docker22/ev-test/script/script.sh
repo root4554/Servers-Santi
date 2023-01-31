@@ -16,3 +16,15 @@ docker pause ubuntu4
 
 # Mostrar los contenedores con estado
 docker ps -a
+
+# Mostrar los contenedores con estado y su estado
+# docker ps -a --format "table {{.Names}}\t{{.Status}}"
+# docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Image}}"
+# docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}"
+docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}\t{{.RunningFor}}"
+
+# borra todos los contenedores
+docker rm $(docker ps -a -q)
+
+# Mostrar si hay contenedores 
+docker ps -a
