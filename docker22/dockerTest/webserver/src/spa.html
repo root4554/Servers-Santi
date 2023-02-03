@@ -1,0 +1,37 @@
+<br><strong id="h1"></strong><br>
+<button id='btn' onclick="fetchApi()">fetch</button>
+<input id='txt' value=0 maxlength="5" size="5">
+<hr>
+<ul id='list'></ul>
+<script type='text/javascript'>
+    function fetchApi() {
+        var val = document.getElementById('txt').value;
+        fetch(url + '/?data=' + val)
+            .then(response => {
+                console.log(response);
+                return response.json();
+            })
+            .then(json => {
+                console.log(json);
+                addLItemToUList(JSON.stringify(json));
+                setValueToInputText(json);
+            })
+            .catch(error => addLItemToUList(error))
+    }
+    function addLItemToUList(txt) {
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(txt));
+        document.getElementById('list').appendChild(li);
+    }
+    const setValueToInputText = json => document.getElementById('txt').value = json.data;
+    document.addEventListener("DOMContentLoaded", async event => {
+        // A Preprocesado en servidor 
+        url = '${api}'; 
+        // B Obtenido del servidor sincronamente
+        // response = await fetch(window.location.origin+'/getapi');
+        // url = await response.text();  
+        // 
+        document.getElementById('h1').innerHTML=url;
+    });
+</script>
+<style> * { font-size: xx-large; font-family: monospace; } </style>
